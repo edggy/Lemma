@@ -1,7 +1,7 @@
 /**
  * 
  */
-package settings;
+package lemma;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,6 +11,8 @@ import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * @author ethan
@@ -24,12 +26,20 @@ public class Settings {
 		map = new HashMap<String, String>();
 	}
 	
+	public Settings(Settings s) {
+		map = new HashMap<String, String>();
+		Set<Entry<String, String>> es = s.map.entrySet();
+		for(Entry<String, String> e : es) {
+			map.put(e.getKey(), e.getValue());
+		}
+	}
+	
 	public String get(String s) {
 		return map.get(s);
 	}
 	
-	public String set(String s, String v) {
-		return map.put(s, v);
+	public void set(String s, String v) {
+		map.put(s, v);
 	}
 	
 	public static Settings parseFile(File file) throws ParseException, IOException {
