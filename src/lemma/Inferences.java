@@ -5,7 +5,10 @@ package lemma;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.ParseException;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -38,6 +41,6 @@ public class Inferences {
 	}
 	
 	public static Inference parseFile(String path, Settings set) throws ParseException, IOException {
-		
+		List<String> list = Files.readAllLines(Paths.get(path));
 	}
 }

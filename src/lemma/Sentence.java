@@ -24,7 +24,7 @@ public class Sentence {
 		return null;
 	}
 	
-	public static Sentence parseString(String s) {
+	public static Sentence parse(String s) {
 		//TODO	
 		return null;
 	}

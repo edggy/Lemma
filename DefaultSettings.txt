@@ -1,0 +1,15 @@
+#separator="(?<"+seperator_group1+">.+?)\\s*=\\s*\\\"(?<"+seperator_group2+">.++)\\\""
+blank="^\s*$"
+comment_line="^\s*#"
+system_variable="@(\w+)@"
+inference_start="^\s*[iI]nference:?"
+inference_name=":\s*(.+?)\s"
+inference_premise="(.*)"
+inference_conclusion_start="^\."
+inference_conclusion="@inference_conclusion_start@(.*)"
+
+#	inference: Modus_Ponens
+#	p
+#	p->q
+#	.q
+
