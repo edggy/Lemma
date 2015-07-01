@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
  *
  */
 public class Settings {
-
+	
 	public static final String separator = "separator";
 
 	public static final String blank = "blank";

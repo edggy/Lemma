@@ -82,10 +82,14 @@ public class Inference {
 	}
 	
 	public static Inference parse(BufferedReader br, Settings set) throws ParseException, IOException {
+		return parse(br, set, 0);
+	}
+	
+	public static Inference parse(BufferedReader br, Settings set, int start) throws ParseException, IOException {
 		Inference in = new Inference();
 		Mode mode = Mode.Before;
 		String s = "";
-		int lineNum = 0;
+		int lineNum = start;
 		while((s = br.readLine()) != null && !mode.equals(Mode.After) && !mode.equals(Mode.Error)) {
 			lineNum++;
 			if(set.matches(Settings.comment, s) || set.matches(Settings.blank, s)) continue;
