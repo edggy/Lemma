@@ -16,7 +16,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * @author ethan
+ * All the Inference rules for the system
+ * @author Ethan
  *
  */
 public class Inferences {

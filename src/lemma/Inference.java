@@ -13,8 +13,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 
 /**
- * @author ethan
- *
+ * A single Inference rule
+ * @author Ethan
  */
 public class Inference {
 	private enum Mode {

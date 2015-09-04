@@ -4,6 +4,7 @@
 package lemma;
 
 /**
+ * A logic sentence
  * @author ethan
  *
  */

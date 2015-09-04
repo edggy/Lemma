@@ -16,6 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * A Settings class, used to define rules to parse proofs
  * @author ethan
  *
  */
@@ -59,6 +60,10 @@ public class Settings {
 		return map.get(name);
 	}
 	
+	public Set<String> getAll() {
+		return map.keySet();
+	}
+	
 	public void set(String name, String p) {
 		map.put(name.toLowerCase(), Pattern.compile(p));
 	}
@@ -81,9 +86,18 @@ public class Settings {
 		return m;
 	}
 	
+	/**
+	 * <b>parse</b><br>
+	 * Parses a BufferedReader into a Settings object
+	 * @param br A BufferedReader to parse into a Settings object
+	 * @return A Settings file from the data from the BufferedReader
+	 * @throws ParseException Thrown if there is an error in the syntax
+	 * @throws IOException Thrown for any IO errors
+	 */
 	public static Settings parse(BufferedReader br) throws ParseException, IOException {
 		Settings set = new Settings();
-		//set.set(separator, "(?<"+separator_group1+">.+?)\\s*=\\s*\\\"(?<"+separator_group2+">.++)\\\"");
+		//Default settings
+		//This makes "=" the separator with quotes around the value
 		set.set(separator, "(?<name>\\w+?)\\s*=\\s*\"(?<value>.+?)\"");
 		set.set(blank, "^\\s*$");
 		set.set(comment, "^\\s*#");
@@ -99,52 +113,40 @@ public class Settings {
 			if(name == null) throw new ParseException("No " + separator_group1 + ", line " + lineNum, lineNum);
 			if(value == null) throw new ParseException("No " +separator_group2 + ", line " + lineNum, lineNum);
 			while(set.matches(system_variable,value)) {
-				System.out.println(value);
+				//System.out.println(value);
 				Matcher mat = set.getCapturedGroups(system_variable, value);
-				System.out.println(mat.group());
+				//System.out.println(mat.group());
 				String var_name = mat.group(1);
 				value = mat.replaceFirst(Matcher.quoteReplacement(set.get(var_name).pattern()));
 			}
-			System.out.println(value);
+			//System.out.println(value);
 			if(set.matches(system_variable,value)) set.set(name, set.get(value));
 			else set.set(name, value);
 		}
 		return set;
 	}
 	
+	/**
+	 * <b>parseFile</b><br>
+	 * Takes a File and parses it into a Setting object
+	 * @param file An input file to parse
+	 * @return A Settings object of the File
+	 * @throws ParseException Thrown if there is an error in the syntax
+	 * @throws IOException Thrown for any IO errors
+	 */
 	public static Settings parseFile(File file) throws ParseException, IOException {
 		return parse(new BufferedReader(new FileReader(file)));
 	}
 	
+	/**
+	 * <b>parseFile</b><br>
+	 * Parses a file into a Setting object
+	 * @param path The path to a file to parse
+	 * @return A Settings object of the file at the given path
+	 * @throws ParseException Thrown if there is an error in the syntax
+	 * @throws IOException Thrown for any IO errors
+	 */
 	public static Settings parseFile(String path) throws ParseException, IOException {
 		return parse(new BufferedReader(new FileReader(path)));
-		/*List<String> list = Files.readAllLines(Paths.get(path));
-		Settings set = new Settings();
-		set.set("seperator", "(?<name>.+?)\\s*=\\s*\\\"(?<value>.++)\\\"");
-		set.set("blank", "\\s*");
-		//String seperator = "(?<name>.+?)\\s*=\\s*\\\"(?<value>.++)\\\"";
-		//String comment = null;
-		int lineNum = 0;
-		for(String s : list) {
-			lineNum++;
-			if(set.matches("comment", s) || set.matches("blank", s)) continue;
-			if(!set.matches("seperator", s)) throw new ParseException("No separator", lineNum);
-			
-			Matcher m = set.getCapturedGroups("seperator", s);
-			String name = m.group("name");
-			String value = m.group("value");
-			if(name == null) throw new ParseException("No name", lineNum);
-			if(value == null) throw new ParseException("No value", lineNum);
-			set.set(name, value);
-			
-			//String[] tok = null;
-			//if(comment != null && !comment.isEmpty()) s = s.split(comment)[0];
-			//tok = s.split(seperator, 1);
-			//if(tok.length == 2) set.set(tok[0], tok[1]);
-			//else throw new ParseException("No separator", lineNum);
-			//if(tok[0].equalsIgnoreCase("separator")) seperator = tok[1];
-			//else if(tok[0].equalsIgnoreCase("comment")) comment = tok[1];
-		}
-		return set;*/
 	}
 }

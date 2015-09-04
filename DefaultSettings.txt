@@ -8,6 +8,12 @@ inference_premise="(.*)"
 inference_conclusion_start="^\."
 inference_conclusion="@inference_conclusion_start@(.*)"
 
+and="&"
+or="|"
+xor="^"
+if="->"
+iff="<->"
+
 #	inference: Modus_Ponens
 #	p
 #	p->q
