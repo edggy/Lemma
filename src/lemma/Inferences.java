@@ -42,19 +42,30 @@ public class Inferences {
 	public void removeInference(Collection<Inference> i) {
 		inferenceList.removeAll(i);
 	}
+	
+	public boolean hasInference(Inference i) {
+		return inferenceList.contains(i);
+	}
 
 	public int hashCode() {
 		return inferenceList.hashCode();
 	}
 
 	public boolean equals(Object o) {
-		//TODO
-		return false;
+		if(!(o instanceof Inferences)) return false;
+		for(Inference i : inferenceList) {
+			if(!((Inferences) o).hasInference(i)) return false;
+		}
+		return true;
 	}
 
 	public String toString() {
 		//TODO
-		return null;
+		String result = "";
+		for(Inference i : inferenceList) {
+			result += i.toString() + '\n';
+		}
+		return result;
 	}
 
 	public static Inferences parseFile(File file, Settings set) throws ParseException, IOException {

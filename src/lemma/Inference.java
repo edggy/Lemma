@@ -126,4 +126,8 @@ public class Inference {
 		if(!mode.equals(Mode.After)) throw new ParseException("Inference Parsing Error" + ", line " + lineNum, lineNum);
 		return in;
 	}
+	
+	public static Inference parse(String text, Settings set) throws ParseException, IOException {
+		return parse(Util.stringToBr(text), set);
+	}
 }
