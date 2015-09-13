@@ -80,10 +80,10 @@ public class Inferences {
 		int lineNum = 0;
 		Inferences inferences = new Inferences();
 		try{
-			String s;
-			while((s = br.readLine()) != null) {
+			String line;
+			while((line = Util.readLine(br, set)) != null) {
 				lineNum++;
-				inferences.addInference(Inference.parse(br, set));
+				inferences.addInference(Inference.parse(line, set));
 			}
 		} catch(ParseException e) {
 			throw new ParseException(e.getMessage(),e.getErrorOffset() + lineNum);
