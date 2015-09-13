@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 public class Settings {
 	
 	public static final String separator = "separator";
-
+	public static final String line = "line";
 	public static final String blank = "blank";
 	public static final String comment = "comment_line";
 	public static final String system_variable = "system_variable";
@@ -41,6 +41,7 @@ public class Settings {
 	//public static final String inference_premise_group1 = "premise";
 	//public static final String inference_conclusion_group1 = "conclusion";
 	
+	public static final int system_variable_timeout = 1000;	
 	
 	private Map<String, Pattern> map;
 	
@@ -99,11 +100,12 @@ public class Settings {
 		//Default settings
 		//This makes "=" the separator with quotes around the value
 		set.set(separator, "(?<name>\\w+?)\\s*=\\s*\"(?<value>.+?)\"");
+		set.set(line, ".*\n");
 		set.set(blank, "^\\s*$");
 		set.set(comment, "^\\s*#");
 		int lineNum = 0;
 		String s = "";
-		while((s = br.readLine()) != null) {
+		while((s = Util.readLine(br, set)) != null) {
 			lineNum++;
 			if(set.matches(comment, s) || set.matches(blank, s)) continue;
 			if(!set.matches(separator, s)) throw new ParseException("No " + separator + ", line " + lineNum, lineNum);
@@ -111,13 +113,16 @@ public class Settings {
 			String name = m.group(separator_group1);
 			String value = m.group(separator_group2);
 			if(name == null) throw new ParseException("No " + separator_group1 + ", line " + lineNum, lineNum);
-			if(value == null) throw new ParseException("No " +separator_group2 + ", line " + lineNum, lineNum);
+			if(value == null) throw new ParseException("No " + separator_group2 + ", line " + lineNum, lineNum);
+			int count = 0;
 			while(set.matches(system_variable,value)) {
+				if(count >= system_variable_timeout) throw new ParseException("System Variable replacement timed out" + ", line " + lineNum, lineNum);
 				//System.out.println(value);
 				Matcher mat = set.getCapturedGroups(system_variable, value);
 				//System.out.println(mat.group());
 				String var_name = mat.group(1);
 				value = mat.replaceFirst(Matcher.quoteReplacement(set.get(var_name).pattern()));
+				count++;
 			}
 			//System.out.println(value);
 			if(set.matches(system_variable,value)) set.set(name, set.get(value));
