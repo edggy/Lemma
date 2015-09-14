@@ -81,7 +81,7 @@ public class Inferences {
 		Inferences inferences = new Inferences();
 		try{
 			String line;
-			while((line = Util.readLine(br, set)) != null) {
+			while((line = Util.readUntil(br, set, Settings.inference)) != null) {
 				lineNum++;
 				inferences.addInference(Inference.parse(line, set));
 			}

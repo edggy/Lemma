@@ -32,7 +32,7 @@ public class Settings {
 	public static final String inference_premise = "inference_premise";
 	public static final String inference_conclusion_start = "inference_conclusion_start";
 	public static final String inference_conclusion = "inference_conclusion";
-	
+	public static final String inference = "inference";
 	
 	
 	public static final String separator_group1 = "name";

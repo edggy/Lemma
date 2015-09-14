@@ -13,21 +13,25 @@ import java.io.StringReader;
  */
 public class Util {
 	public static String readLine(BufferedReader br, Settings set) throws IOException {
+		return readUntil(br, set, Settings.line);
+	}
+	
+	public static String readLine(String text, Settings set) {
+		try {
+			return readUntil(stringToBr(text), set, Settings.line);
+		} catch (IOException e) {
+		}
+		return null;
+	}
+	
+	public static String readUntil(BufferedReader br, Settings set, String setting_match) throws IOException {
 		String line = "";
-		while(!set.matches(Settings.line, line)) {
+		while(!set.matches(setting_match, line)) {
 			int nextChar = br.read();
 			if(nextChar < 0) return null;
 			line += (char) nextChar;
 		}
 		return line;
-	}
-	
-	public static String readLine(String text, Settings set) {
-		try {
-			return readLine(stringToBr(text), set);
-		} catch (IOException e) {
-		}
-		return null;
 	}
 	
 	public static BufferedReader stringToBr(String s) {
