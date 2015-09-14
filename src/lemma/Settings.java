@@ -99,7 +99,7 @@ public class Settings {
 		Settings set = new Settings();
 		//Default settings
 		//This makes "=" the separator with quotes around the value
-		set.set(separator, "(?<name>\\w+?)\\s*=\\s*\"(?<value>.+?)\"");
+		set.set(separator, "(?<" + separator_group1 + ">\\w+?)\\s*=\\s*\"(?<" + separator_group2 + ">.+?)\"");
 		set.set(line, ".*\n");
 		set.set(blank, "^\\s*$");
 		set.set(comment, "^\\s*#");

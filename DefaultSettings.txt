@@ -1,4 +1,4 @@
-#separator="(?<"+seperator_group1+">.+?)\\s*=\\s*\\\"(?<"+seperator_group2+">.++)\\\""
+#separator="(?<name>.+?)\\s*=\\s*\\\"(?<value>.++)\\\""
 blank="^\s*$"
 comment_line="^\s*#"
 system_variable="@(\w+)@"
@@ -10,6 +10,7 @@ inference_conclusion="@inference_conclusion_start@(.*)"
 
 and="&"
 or="|"
+not="!"
 xor="^"
 if="->"
 iff="<->"
