@@ -1,3 +1,5 @@
 Notes:
+recursion for setting variables
+#include to import files?
 
 
