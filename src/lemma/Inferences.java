@@ -68,15 +68,15 @@ public class Inferences {
 		return result;
 	}
 
-	public static Inferences parseFile(File file, Settings set) throws ParseException, IOException {
-		return parseFile(new BufferedReader(new FileReader(file)), set);
+	public static Inferences parse(File file, Settings set) throws ParseException, IOException {
+		return parse(new BufferedReader(new FileReader(file)), set);
 	}
 
-	public static Inferences parseFile(String path, Settings set) throws ParseException, IOException {
-		return parseFile(new BufferedReader(new FileReader(path)), set);
+	public static Inferences parse(String path, Settings set) throws ParseException, IOException {
+		return parse(new BufferedReader(new FileReader(path)), set);
 	}
 
-	public static Inferences parseFile(BufferedReader br, Settings set) throws ParseException, IOException {
+	public static Inferences parse(BufferedReader br, Settings set) throws ParseException, IOException {
 		int lineNum = 0;
 		Inferences inferences = new Inferences();
 		try{

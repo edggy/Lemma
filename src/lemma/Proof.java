@@ -3,6 +3,8 @@
  */
 package lemma;
 
+import java.io.BufferedReader;
+
 /**
  * @author Ethan
  *
@@ -18,5 +20,10 @@ public class Proof {
 	public boolean verify(Inferences inferences, Settings settings) {
 		//TODO
 		return false;
+	}
+
+	public static Proof parse(BufferedReader br) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -27,6 +27,7 @@ public class Settings {
 	public static final String blank = "blank";
 	public static final String comment = "comment_line";
 	public static final String system_variable = "system_variable";
+	public static final String settings_end = "settings_end";
 	public static final String inference_start = "inference_start";
 	public static final String inference_name = "inference_name";
 	public static final String inference_premise = "inference_premise";
@@ -103,11 +104,13 @@ public class Settings {
 		set.set(line, ".*\n");
 		set.set(blank, "^\\s*$");
 		set.set(comment, "^\\s*#");
+		set.set(settings_end, "^\\s*SETTINGS END");
 		int lineNum = 0;
 		String s = "";
 		while((s = Util.readLine(br, set)) != null) {
 			lineNum++;
 			if(set.matches(comment, s) || set.matches(blank, s)) continue;
+			if(set.matches(settings_end, s)) return set;
 			if(!set.matches(separator, s)) throw new ParseException("No " + separator + ", line " + lineNum, lineNum);
 			Matcher m = set.getCapturedGroups(separator, s);
 			String name = m.group(separator_group1);
@@ -116,17 +119,19 @@ public class Settings {
 			if(value == null) throw new ParseException("No " + separator_group2 + ", line " + lineNum, lineNum);
 			int count = 0;
 			while(set.matches(system_variable,value)) {
-				if(count >= system_variable_timeout) throw new ParseException("System Variable replacement timed out" + ", line " + lineNum, lineNum);
+				//if(count >= system_variable_timeout) throw new ParseException("System Variable replacement timed out" + ", line " + lineNum, lineNum);
+				if(count >= system_variable_timeout) break;
 				//System.out.println(value);
 				Matcher mat = set.getCapturedGroups(system_variable, value);
 				//System.out.println(mat.group());
 				String var_name = mat.group(1);
-				value = mat.replaceFirst(Matcher.quoteReplacement(set.get(var_name).pattern()));
+				value = mat.replaceAll(Matcher.quoteReplacement(set.get(var_name).pattern()));
 				count++;
 			}
 			//System.out.println(value);
-			if(set.matches(system_variable,value)) set.set(name, set.get(value));
-			else set.set(name, value);
+			//if(set.matches(system_variable,value)) set.set(name, set.get(value));
+			//else set.set(name, value);
+			set.set(name, value);
 		}
 		return set;
 	}

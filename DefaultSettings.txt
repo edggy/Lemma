@@ -8,12 +8,16 @@ inference_premise="(.*)"
 inference_conclusion_start="^\."
 inference_conclusion="@inference_conclusion_start@(.*)"
 
+#wff= "(@variable@|(@wff@\\s*@operator@\\s*@wff@))"
+
 and="&"
 or="|"
 not="!"
 xor="^"
 if="->"
 iff="<->"
+
+SETTINGS END
 
 #	inference: Modus_Ponens
 #	p
