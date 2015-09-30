@@ -58,6 +58,11 @@ public class Settings {
 		}
 	}
 	
+	/**
+	 * Retrieves the Pattern associated with this setting
+	 * @param name The name of the setting
+	 * @return The Pattern associated with this setting
+	 */
 	public Pattern get(String name) {
 		return map.get(name);
 	}
@@ -66,26 +71,54 @@ public class Settings {
 		return map.keySet();
 	}
 	
-	public void set(String name, String p) {
-		map.put(name.toLowerCase(), Pattern.compile(p));
+	/**
+	 * Sets the setting to the regex
+	 * @param name The name of the setting
+	 * @param regex The String representation of the Pattern
+	 */
+	public void set(String name, String regex) {
+		map.put(name.toLowerCase(), Pattern.compile(regex));
 	}
 	
+	/**
+	 * Sets the setting to the Pattern
+	 * @param name The name of the setting
+	 * @param p The Pattern to set the setting to
+	 */
 	public void set(String name, Pattern p) {
 		map.put(name.toLowerCase(), p);
 	}
 	
 	public boolean matches(String name, String s) {
+		expand(name);
 		Pattern p = map.get(name.toLowerCase());
 		if(p == null) return false;
 		return p.matcher(s).find();
 	}
 	
-	public Matcher getCapturedGroups(String name, String s) {
+	public Matcher getMatcher(String name, String s) {
+		expand(name);
 		Pattern p = map.get(name.toLowerCase());
 		if(p == null) return null;
 		Matcher m = p.matcher(s);
-		m.find();
 		return m;
+	}
+	
+	private void expand(String name) {
+		if(system_variable.equalsIgnoreCase(name)) return;
+		int count = 0;
+		//System.out.println(name + " " + this.get(name));
+		while(this.matches(system_variable, this.get(name).pattern())) {
+			//if(count >= system_variable_timeout) throw new ParseException("System Variable replacement timed out" + ", line " + lineNum, lineNum);
+			if(count >= system_variable_timeout) break;
+			Matcher mat = this.getMatcher(system_variable, this.get(name).pattern());
+			mat.find();
+			String var_name = mat.group(1);
+			System.out.println("\t" + var_name + " " + this.get(var_name));
+			String value = mat.replaceAll(Matcher.quoteReplacement(this.get(var_name).pattern()));
+			this.set(name, value);
+			count++;
+		}
 	}
 	
 	/**
@@ -104,6 +137,7 @@ public class Settings {
 		set.set(line, ".*\n");
 		set.set(blank, "^\\s*$");
 		set.set(comment, "^\\s*#");
+		set.set(system_variable, "@(?<name>\\w+)@");
 		set.set(settings_end, "^\\s*SETTINGS END");
 		int lineNum = 0;
 		String s = "";
@@ -112,26 +146,30 @@ public class Settings {
 			if(set.matches(comment, s) || set.matches(blank, s)) continue;
 			if(set.matches(settings_end, s)) return set;
 			if(!set.matches(separator, s)) throw new ParseException("No " + separator + ", line " + lineNum, lineNum);
-			Matcher m = set.getCapturedGroups(separator, s);
+			Matcher m = set.getMatcher(separator, s);
+			m.find();
 			String name = m.group(separator_group1);
 			String value = m.group(separator_group2);
 			if(name == null) throw new ParseException("No " + separator_group1 + ", line " + lineNum, lineNum);
 			if(value == null) throw new ParseException("No " + separator_group2 + ", line " + lineNum, lineNum);
-			int count = 0;
-			while(set.matches(system_variable,value)) {
+			set.set(name, value);
+			/*int count = 0;
+			System.out.println(name + ": " + value);
+			while(set.matches(system_variable, set.get(name).pattern())) {
 				//if(count >= system_variable_timeout) throw new ParseException("System Variable replacement timed out" + ", line " + lineNum, lineNum);
 				if(count >= system_variable_timeout) break;
-				//System.out.println(value);
-				Matcher mat = set.getCapturedGroups(system_variable, value);
-				//System.out.println(mat.group());
+				Matcher mat = set.getMatcher(system_variable, value);
+				mat.find();
 				String var_name = mat.group(1);
+				System.out.println("\t" + var_name + " " + set.get(var_name));
 				value = mat.replaceAll(Matcher.quoteReplacement(set.get(var_name).pattern()));
+				set.set(name, value);
 				count++;
-			}
+			}*/
 			//System.out.println(value);
 			//if(set.matches(system_variable,value)) set.set(name, set.get(value));
 			//else set.set(name, value);
-			set.set(name, value);
+			//set.set(name, value);
 		}
 		return set;
 	}

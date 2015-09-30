@@ -22,6 +22,7 @@ public class Testing {
 			try {
 				Settings s = Settings.parseFile("DefaultSettings.txt");
 				System.out.println(s.matches("comment_line", "    # this is a comment"));
+				System.out.println(s.matches("variable", "!"));
 				Set<String> keys = s.getAll();
 				for(String key : keys) {
 					System.out.println(key + ": " + s.get(key));
