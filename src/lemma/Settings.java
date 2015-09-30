@@ -42,19 +42,26 @@ public class Settings {
 	//public static final String inference_premise_group1 = "premise";
 	//public static final String inference_conclusion_group1 = "conclusion";
 	
-	public static final int system_variable_timeout = 1000;	
+	public static final int system_variable_timeout = 4;	
 	
 	private Map<String, Pattern> map;
+	private Map<String, Boolean> expanded;
 	
 	public Settings() {
 		map = new HashMap<String, Pattern>();
+		expanded = new HashMap<String, Boolean>();
 	}
 	
 	public Settings(Settings s) {
 		map = new HashMap<String, Pattern>();
+		expanded = new HashMap<String, Boolean>();
 		Set<Entry<String, Pattern>> es = s.map.entrySet();
 		for(Entry<String, Pattern> e : es) {
 			map.put(e.getKey(), e.getValue());
+		}
+		Set<Entry<String, Boolean>> exs = s.expanded.entrySet();
+		for(Entry<String, Boolean> e : exs) {
+			expanded.put(e.getKey(), e.getValue());
 		}
 	}
 	
@@ -77,6 +84,7 @@ public class Settings {
 	 * @param regex The String representation of the Pattern
 	 */
 	public void set(String name, String regex) {
+		expanded.put(name.toLowerCase(), false);
 		map.put(name.toLowerCase(), Pattern.compile(regex));
 	}
 	
@@ -86,6 +94,7 @@ public class Settings {
 	 * @param p The Pattern to set the setting to
 	 */
 	public void set(String name, Pattern p) {
+		expanded.put(name.toLowerCase(), false);
 		map.put(name.toLowerCase(), p);
 	}
 	
@@ -97,7 +106,7 @@ public class Settings {
 	}
 	
 	public Matcher getMatcher(String name, String s) {
-		expand(name);
+		expand(name.toLowerCase());
 		Pattern p = map.get(name.toLowerCase());
 		if(p == null) return null;
 		Matcher m = p.matcher(s);
@@ -105,6 +114,7 @@ public class Settings {
 	}
 	
 	private void expand(String name) {
+		if(expanded.get(name.toLowerCase())) return;
 		if(system_variable.equalsIgnoreCase(name)) return;
 		int count = 0;
 		//System.out.println(name + " " + this.get(name));
@@ -112,13 +122,19 @@ public class Settings {
 			//if(count >= system_variable_timeout) throw new ParseException("System Variable replacement timed out" + ", line " + lineNum, lineNum);
 			if(count >= system_variable_timeout) break;
 			Matcher mat = this.getMatcher(system_variable, this.get(name).pattern());
-			mat.find();
-			String var_name = mat.group(1);
-			System.out.println("\t" + var_name + " " + this.get(var_name));
-			String value = mat.replaceAll(Matcher.quoteReplacement(this.get(var_name).pattern()));
-			this.set(name, value);
+			StringBuffer sb = new StringBuffer();
+			while(mat.find()) {
+				String var_name = mat.group(1);
+				//System.out.println("Found: "+var_name+" Replacing: "+this.get(var_name).pattern());
+				mat.appendReplacement(sb, Matcher.quoteReplacement(this.get(var_name).pattern()));
+			}
+			mat.appendTail(sb);
+			//System.out.println("\t" + var_name + " " + this.get(var_name));
+			//String value = mat.replaceFirst(Matcher.quoteReplacement(this.get(var_name).pattern()));
+			this.set(name, sb.toString());
 			count++;
 		}
+		expanded.put(name.toLowerCase(), true);
 	}
 	
 	/**

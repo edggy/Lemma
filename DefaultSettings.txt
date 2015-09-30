@@ -8,8 +8,11 @@ inference_premise="(.*)"
 inference_conclusion_start="^\."
 inference_conclusion="@inference_conclusion_start@(.*)"
 
-variable="(@and@|@or@|@not@)"
-wff= "(@variable@|(@wff@\\s*@operator@\\s*@wff@))"
+variable="[A-Z0-9]+"
+operator="(@or@|@and@|@xor@|@if@|@iff@)"
+#wff= "\A(@variable@|\(@wff@\s*@operator@\s*@wff@\))\z"
+wff="\A@wff_middle@\z"
+wff_middle= "(@not@)*\s*((@variable@)|(\(@wff_middle@\s*@operator@\s*@wff_middle@\)))"
 
 and="&"
 or="\|"
