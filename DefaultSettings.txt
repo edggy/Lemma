@@ -23,8 +23,13 @@ iff="<->"
 
 SETTINGS END
 
+inference = "[\s\n]*@inference_start@[\s\n]*@inference_middle@[\s\n]*@inference_end@"
+inference_start = "inference: (?<name>\w+)"
+inference_middle = "(@inference_middle_part@[\s\n]*)*"
+inference_middle_part = "(\d)+\s(?<premise>\w+)"
+inference_end = "\.\s*(?<conclusion>[\w\s]+)"
 #	inference: Modus_Ponens
-#	p
-#	p->q
-#	.q
+#	1	p
+#	2	p->q
+#	3	.q
 
