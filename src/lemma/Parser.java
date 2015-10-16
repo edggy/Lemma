@@ -2,7 +2,6 @@ package lemma;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.text.ParseException;
 
 public class Parser {
 	private Settings set;
@@ -21,7 +20,7 @@ public class Parser {
 		//Read in Inferences
 		inf = Inferences.parse(br, set);
 		//Read in Proof
-		proof = Proof.parse(br);
+		proof = Proof.parse(br, set);
 	}
 	
 	public static Parser parse(BufferedReader br) throws ParseException, IOException {

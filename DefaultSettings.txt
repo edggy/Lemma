@@ -14,7 +14,7 @@ variable="[A-Z0-9]+"
 operator="(@or@|@and@|@xor@|@if@|@iff@)"
 #wff= "\A(@variable@|\(@wff@\s*@operator@\s*@wff@\))\z"
 wff="\A@wff_middle@\z"
-wff_middle= "(@not@)*\s*((@variable@)|(\(@wff_middle@\s*@operator@\s*@wff_middle@\)))"
+wff_middle= "(@not@)*\s*(?:(@variable@)|(?:\((@wff_middle@)\s*(@operator@)\s*(@wff_middle@)\)))"
 
 and="&"
 or="\|"
