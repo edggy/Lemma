@@ -27,6 +27,7 @@ public class Settings {
 	public static final String blank = "blank";
 	public static final String comment = "comment_line";
 	public static final String system_variable = "system_variable";
+	public static final String settings_start = "settings_start";
 	public static final String settings_end = "settings_end";
 	public static final String inference_start = "inference_start";
 	public static final String inference_name = "inference_name";
@@ -154,11 +155,15 @@ public class Settings {
 		set.set(blank, "^\\s*$");
 		set.set(comment, "^\\s*#");
 		set.set(system_variable, "@(?<name>\\w+)@");
+		set.set(settings_start, "^\\s*SETTINGS START");
 		set.set(settings_end, "^\\s*SETTINGS END");
 		int lineNum = 0;
 		String s = "";
+		boolean start = false;
 		while((s = Util.readLine(br, set)) != null) {
 			lineNum++;
+			if(start == true || set.matches(settings_start, s)) start = true;
+			else continue;
 			if(set.matches(comment, s) || set.matches(blank, s)) continue;
 			if(set.matches(settings_end, s)) return set;
 			if(!set.matches(separator, s)) throw new ParseException("No " + separator + ", line " + lineNum, lineNum);

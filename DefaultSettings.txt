@@ -1,4 +1,6 @@
+SETTINGS START
 #separator="(?<name>.+?)\\s*=\\s*\\\"(?<value>.++)\\\""
+line=".*\n"
 blank="^\s*$"
 comment_line="^\s*#"
 system_variable="@(?<name>\w+)@"
@@ -21,6 +23,7 @@ xor="^"
 if="->"
 iff="<->"
 
+line=".*;"
 SETTINGS END
 
 inference = "[\s\n]*@inference_start@[\s\n]*@inference_middle@[\s\n]*@inference_end@"
