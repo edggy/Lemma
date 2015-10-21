@@ -21,8 +21,11 @@ public class Sentence {
 	private String leftPart;
 	private String rightPart;
 	private String op;
+	
+	private Settings set;
 
 	public Sentence(String s, Settings set) throws ParseException {
+		this.set = set;
 		Matcher m = set.getMatcher(sentence, s);
 		
 		List<String> groups = new LinkedList<String>();
@@ -56,6 +59,14 @@ public class Sentence {
 		if(rightPart != s.rightPart) return false;
 		if(op != s.op) return false;
 		return true;
+	}
+	
+	public Sentence getLeft() throws ParseException {
+		return new Sentence(leftPart, set);
+	}
+	
+	public Sentence getRight() throws ParseException {
+		return new Sentence(rightPart, set);
 	}
 	
 	public int hashCode() {

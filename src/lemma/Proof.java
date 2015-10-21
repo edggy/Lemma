@@ -17,16 +17,16 @@ public class Proof {
 	
 	public static final String proof_end = "proof_end";
 	
-	private List<Sentence> sen;
+	private List<Proof_Line> sen;
 	
 	public Proof(String proof, Settings set) throws ParseException {
 		int lineNum = 0;
 		String s = "";
-		sen = new Vector<Sentence>();
+		sen = new Vector<Proof_Line>();
 		try {
 			while((s = Util.readLine(proof, set)) != null) {
 				lineNum++;
-				sen.add(Sentence.parse(s, set));
+				sen.add(Proof_Line.parse(s, set));
 			}
 		} catch (ParseException e) {
 			throw new ParseException(e.getMessage(), lineNum, e.getColumn());
@@ -40,6 +40,9 @@ public class Proof {
 	 * @return Whether the proof is valid based on the Inferences and Settings
 	 */
 	public boolean verify(Inferences inferences) {
+		for(Proof_Line line: sen) {
+			line.getSentence().
+		}
 		//TODO
 		return false;
 	}
