@@ -41,10 +41,11 @@ public class Proof {
 	 */
 	public boolean verify(Inferences inferences) {
 		for(Proof_Line line: sen) {
-			line.getSentence().
+			if(!line.verify(inferences)) {
+				return false;
+			}
 		}
-		//TODO
-		return false;
+		return true;
 	}
 
 	public static Proof parse(BufferedReader br, Settings set) throws ParseException, IOException {
