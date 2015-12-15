@@ -9,7 +9,6 @@ import verifier.Sentence;
 public class Main {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		Variable a = new Variable("A");
 		Variable b = new Variable("B");
 		Variable[] v = new Variable[10];

@@ -9,7 +9,7 @@ import java.util.Collection;
 /**
  * <b>Reference</b><br>
  * A Collection of Sentences used to validate the Inference
- * @author edgchess
+ * @author Ethan Gertler
  *
  */
 public interface Reference extends Cloneable, Serializable {

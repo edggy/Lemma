@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * <b>Sentence</b><br>
  * A  finite sequence of symbols from a given alphabet that is part of a formal language
- * @author edgchess
+ * @author Ethan Gertler
  *
  */
 public interface Sentence extends Cloneable, Serializable  {

@@ -30,36 +30,36 @@ public class Proof implements verifier.Proof {
 	}
 	
 	@Override
-	public void insertLine(int line_num) {
+	public void insertLine(int line_num) throws IndexOutOfBoundsException {
 		lines.add(line_num, new verifier.Line());
 	}
 	
 	@Override
-	public void insertLines(int line_num, int amount) {
+	public void insertLines(int line_num, int amount) throws IndexOutOfBoundsException {
 		for(int i = 0; i < amount; i++) {
 			insertLine(line_num);
 		}
 	}
 	
 	@Override
-	public void removeLine(int line_num) {
+	public void removeLine(int line_num) throws IndexOutOfBoundsException{
 		lines.remove(line_num);
 	}
 	
 	@Override
-	public void removeLines(int line_num, int amount) {
+	public void removeLines(int line_num, int amount) throws IndexOutOfBoundsException {
 		for(int i = 0; i < amount; i++) {
 			removeLine(line_num);
 		}
 	}
 	
 	@Override
-	public void addSentence(int line_num, verifier.Sentence sen) {
+	public void addSentence(int line_num, verifier.Sentence sen) throws IndexOutOfBoundsException {
 		lines.get(line_num).s = sen;
 	}
 
 	@Override
-	public void addSentences(int line_num, List<verifier.Sentence> sens) {
+	public void addSentences(int line_num, List<verifier.Sentence> sens) throws IndexOutOfBoundsException {
 		int count = 0;
 		for(verifier.Sentence sen : sens) {
 			addSentence(line_num + count++, sen);
@@ -67,12 +67,12 @@ public class Proof implements verifier.Proof {
 	}
 
 	@Override
-	public verifier.Sentence getSentence(int line_num) {
+	public verifier.Sentence getSentence(int line_num) throws IndexOutOfBoundsException {
 		return lines.get(line_num).s;
 	}
 
 	@Override
-	public List<verifier.Sentence> getSentences(int line_num, int amount) {
+	public List<verifier.Sentence> getSentences(int line_num, int amount) throws IndexOutOfBoundsException {
 		List<verifier.Sentence> ret = new LinkedList<verifier.Sentence>();
 		List<verifier.Line> sub = lines.subList(line_num, line_num + amount);
 		for(verifier.Line line : sub) {
@@ -82,43 +82,43 @@ public class Proof implements verifier.Proof {
 	}
 
 	@Override
-	public void removeSentence(int line_num) {
+	public void removeSentence(int line_num) throws IndexOutOfBoundsException {
 		lines.get(line_num).s = null;
 	}
 
 	@Override
-	public void removeSentences(int line_num, int amount) {
+	public void removeSentences(int line_num, int amount) throws IndexOutOfBoundsException {
 		for(int i = 0; i < amount; i++) {
 			removeSentence(line_num + i);
 		}
 	}
 
 	@Override
-	public void addInference(int line_num, verifier.Inference inf) {
+	public void addInference(int line_num, verifier.Inference inf) throws IndexOutOfBoundsException {
 		lines.get(line_num).i = inf;
 		
 	}
 
 	@Override
-	public verifier.Inference getInference(int line_num) {
+	public verifier.Inference getInference(int line_num) throws IndexOutOfBoundsException {
 		return lines.get(line_num).i;
 
 	}
 
 	@Override
-	public void removeInference(int line_num) {
+	public void removeInference(int line_num) throws IndexOutOfBoundsException {
 		lines.get(line_num).i = null;
 	}
 
 	@Override
-	public void addReference(int line_num, verifier.Reference ref) {
+	public void addReference(int line_num, verifier.Reference ref) throws IndexOutOfBoundsException {
 		Line curLine = lines.get(line_num);
 		if(curLine.r == null) curLine.r = ref;
 		curLine.r.addReferences(ref.getReference());
 	}
 	
 	@Override
-	public void addReference(int line_num, int ref_line) {
+	public void addReference(int line_num, int ref_line) throws IndexOutOfBoundsException {
 		verifier.Reference ref = new Reference();
 		ref.addReference(lines.get(ref_line));
 		
@@ -126,18 +126,18 @@ public class Proof implements verifier.Proof {
 	}
 
 	@Override
-	public verifier.Reference getReference(int line_num) {
+	public verifier.Reference getReference(int line_num) throws IndexOutOfBoundsException {
 		return lines.get(line_num).r;
 	}
 
-	public void removeReference(int line_num, int ref_line) {
+	public void removeReference(int line_num, int ref_line) throws IndexOutOfBoundsException {
 		verifier.Reference curRef = lines.get(line_num).r;
 		if(curRef == null) return;
 		curRef.removeReference(lines.get(ref_line));
 	}
 	
 	@Override
-	public void removeReferences(int line_num) {
+	public void removeReferences(int line_num) throws IndexOutOfBoundsException {
 		lines.get(line_num).r = null;
 	}
 
@@ -174,7 +174,7 @@ public class Proof implements verifier.Proof {
 	}
 
 	@Override
-	public verifier.Line getLine(int line_num) {
+	public verifier.Line getLine(int line_num) throws IndexOutOfBoundsException{
 		return lines.get(line_num);
 	}
 
@@ -184,7 +184,7 @@ public class Proof implements verifier.Proof {
 	}
 
 	@Override
-	public List<verifier.Line> getLines(int line_num, int amount) {
+	public List<verifier.Line> getLines(int line_num, int amount) throws IndexOutOfBoundsException {
 		List<verifier.Line> l = new ArrayList<verifier.Line>();
 		for(int i = line_num; i < amount; i++) {
 			l.add(lines.get(i));
