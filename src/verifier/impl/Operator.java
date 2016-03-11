@@ -14,6 +14,18 @@ public class Operator implements verifier.Operator {
 	}
 	
 	@Override
+	public boolean equals(Object o) {
+		if(!(o instanceof verifier.Operator)) return false;
+		o = (verifier.Operator)o;
+		return this.toString().equals(o.toString());
+	}
+	
+	@Override
+	public int hashCode() {
+		return this.name.hashCode();
+	}
+	
+	@Override
 	public String toString() {
 		return name;
 	}

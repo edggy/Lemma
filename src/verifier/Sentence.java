@@ -14,11 +14,14 @@ import java.util.Map;
  *
  */
 public interface Sentence extends Cloneable, Serializable  {
+
 	public List<Sentence> parts();
 	public Operator getOperator();
 	public boolean equals(Object o);
 	public Map<Variable, Sentence> mapInto(Sentence sen);
 	public boolean canMapInto(Sentence sen);
 	public Sentence clone();
+	public Sentence replaceAll(Sentence find, Sentence replace);
+	public void setParser(SentenceParser p);
 	
 }

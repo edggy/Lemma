@@ -7,6 +7,20 @@ package verifier;
  *
  */
 public interface Operator extends Cloneable {
+	public static class GenericOperator extends verifier.impl.Operator {
+		public GenericOperator(String s) {
+			super(s);
+		}
+
+		public boolean equals(Object o) {
+			return o instanceof Operator;
+		}
+		
+		@Override
+		public int hashCode() {
+			return 0;
+		}
+	}
 	/**
 	 *  <b>equals</b><br>
 	 *  Two Operators are equal iff they have the same output for every input combination

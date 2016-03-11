@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import verifier.Sentence;
+import verifier.SentenceParser;
 import verifier.Variable;
 
 public abstract class AbstractSentence implements Sentence {
@@ -12,12 +13,12 @@ public abstract class AbstractSentence implements Sentence {
 	 * 
 	 */
 	private static final long serialVersionUID = 1324374494088588165L;
-
+	public static verifier.SentenceParser parser = new verifier.impl.SentenceParser();
+	
 	public abstract Sentence clone();
 	
 	@Override
 	public Map<verifier.Variable, Sentence> mapInto(verifier.Sentence sen) {
-		// TODO Auto-generated method stub
 		Map<verifier.Variable, Sentence> result = new HashMap<verifier.Variable, Sentence>();
 		if(this instanceof verifier.Variable) {
 			result.put((Variable) this, sen);
@@ -51,6 +52,7 @@ public abstract class AbstractSentence implements Sentence {
 		if(!(o instanceof Sentence)) return false;
 		Sentence s = (Sentence)o;
 		if(this.getOperator() == null) {
+			
 			if(s.getOperator() != null) return false;
 		}
 		else {
@@ -62,7 +64,16 @@ public abstract class AbstractSentence implements Sentence {
 	}
 	
 	@Override
+	public void setParser(SentenceParser p) {
+		parser = p;
+	}
+	
+	@Override
 	public int hashCode() {
 		return this.toString().hashCode();
+	}
+	
+	public String toString() {
+		return parser.toString(this);
 	}
 }

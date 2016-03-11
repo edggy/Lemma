@@ -8,9 +8,6 @@ import verifier.Operator;
 import verifier.Sentence;
 
 public class Variable extends AbstractSentence implements verifier.Variable {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -6130239830546251981L;
 
 	public static class Contradiction extends Variable {
@@ -67,6 +64,11 @@ public class Variable extends AbstractSentence implements verifier.Variable {
 		return result;
 	}
 	
+	@Override
+	public boolean canMapInto(verifier.Sentence sen) {
+		return true;
+	}
+	
 	public boolean equals(Object o) {
 		if(!(o instanceof Variable)) return false;
 		return this.name.equals(((Variable)o).name);
@@ -90,6 +92,11 @@ public class Variable extends AbstractSentence implements verifier.Variable {
 	@Override
 	public String name() {
 		return name;
+	}
+
+	@Override
+	public Sentence replaceAll(Sentence find, Sentence replace) {
+		return this;
 	}
 
 }

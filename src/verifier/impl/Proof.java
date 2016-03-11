@@ -12,7 +12,7 @@ public class Proof implements verifier.Proof {
 	 * 
 	 */
 	private static final long serialVersionUID = -3096088496085261678L;
-	List<verifier.Line> lines;
+	protected List<verifier.Line> lines;
 	
 	public Proof() {
 		lines = new LinkedList<verifier.Line>();

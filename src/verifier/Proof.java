@@ -10,12 +10,20 @@ import java.util.List;
  *
  */
 public interface Proof extends Serializable {
+	
+	public static class AssumptionInference implements Inference {
+		private static final long serialVersionUID = 6579731403445321639L;
+		public AssumptionInference() {}
+		@Override public String name() {return "Assumption";}
+		@Override public boolean isValid(Sentence sen, Reference ref) {return true;}
+		@Override public Inference clone() {return this;}
+	}
 	/**
 	 * <b>ASSUMPTION</b><br>
 	 * An Inference to be used to assume new Sentences 
 	 * as premises in a Proof
 	 */
-	public static final Inference ASSUMPTION = new verifier.impl.Inference("Assumption", null, null);
+	public static final Inference ASSUMPTION = new AssumptionInference();
 	
 	/**
 	 * <b>length</b><br>

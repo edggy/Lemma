@@ -2,6 +2,8 @@ package verifier.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
+
 import verifier.Sentence;
 
 
@@ -77,39 +79,18 @@ public class TreeSentence extends AbstractSentence {
 	
 	@Override
 	public verifier.Sentence clone() {
-		/*
-		TreeSentence copy = new TreeSentence();
-		verifier.Operator op = this.getOperator();
-		
-		if(parts.size() <= 0) {
-			return copy;
-		}
-		for(verifier.Sentence sen : this.parts) {
-			copy.parts.add(sen.clone());
-		}
-		return copy;
-		*/
 		return new TreeSentence(this);
 	}
 	
 	@Override
-	public String toString() {
-		String result = "(";
-		result += this.operator != null?this.operator + " ":"";
-		boolean first = true;
-		for(verifier.Sentence sen : this.parts) {
-			if(first) {
-				result += sen;
-				first = false;
-			}
-			else {
-				result += "," + sen;
-			}
-		}
-		result += ")";
-		return result;
+	public Sentence replaceAll(Sentence find, Sentence replace) {
+		final ListIterator<Sentence> li = this.parts.listIterator();
+	     while (li.hasNext()) {
+	    	 Sentence cur = li.next();
+	    	 if(cur.equals(find)) li.set(replace);
+	    	 else cur.replaceAll(find, replace);
+	     }
+		return this;
 	}
-	
-
 
 }
